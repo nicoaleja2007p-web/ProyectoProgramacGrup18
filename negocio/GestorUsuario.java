@@ -1,6 +1,7 @@
 package negocio;
 
 import modelo.Usuario;
+import modelo.Viaje;
 import java.util.ArrayList;
 
 public class GestorUsuario {
@@ -84,44 +85,34 @@ public class GestorUsuario {
         return true;
     }
 
+    // Guarda el viaje en el historial del usuario activo
+    public void registrarViajeEnHistorial(Viaje viaje) {
+        if (usuarioActivo != null) {
+            usuarioActivo.agregarViaje(viaje);
+            System.out.println("Viaje registrado en historial de " + usuarioActivo.getNombre());
+        }
+    }
+
+    // Devuelve el historial como texto para mostrarlo en la interfaz
+    public String obtenerHistorial() {
+        if (usuarioActivo == null) {
+            return "No hay sesion activa.";
+        }
+        return usuarioActivo.getHistorial().toString();
+    }
+
     public String obtenerMensajeError(String nombre, String email, String contrasena) {
-        if (nombre == null || nombre.equals("")) {
-            return "El nombre es obligatorio.";
-        }
-        if (nombre.length() < 3) {
-            return "El nombre debe tener al menos 3 caracteres.";
-        }
-        if (email == null || email.equals("")) {
-            return "El email es obligatorio.";
-        }
-        if (!email.contains("@") || !email.contains(".")) {
-            return "El email debe tener formato valido (ejemplo@correo.com).";
-        }
-        if (contrasena == null || contrasena.equals("")) {
-            return "La contrasena es obligatoria.";
-        }
-        if (contrasena.length() < 6) {
-            return "La contrasena debe tener al menos 6 caracteres.";
-        }
+        if (nombre == null || nombre.equals("")) return "El nombre es obligatorio.";
+        if (nombre.length() < 3) return "El nombre debe tener al menos 3 caracteres.";
+        if (email == null || email.equals("")) return "El email es obligatorio.";
+        if (!email.contains("@") || !email.contains(".")) return "El email debe tener formato valido (ejemplo@correo.com).";
+        if (contrasena == null || contrasena.equals("")) return "La contraseña es obligatoria.";
+        if (contrasena.length() < 6) return "La contrasena debe tener al menos 6 caracteres.";
         return "";
     }
 
-    public Usuario getUsuarioActivo() {
-        return usuarioActivo;
-    }
-
-    public ArrayList<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public boolean haySesionActiva() {
-        if (usuarioActivo != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public int getIntentosFallidos() {
-        return intentosFallidos;
-    }
+    public Usuario getUsuarioActivo() { return usuarioActivo; }
+    public ArrayList<Usuario> getUsuarios() { return usuarios; }
+    public boolean haySesionActiva() { return usuarioActivo != null; }
+    public int getIntentosFallidos() { return intentosFallidos; }
 }
