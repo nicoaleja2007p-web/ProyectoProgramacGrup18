@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 public class PerfilPreferencias {
 
+    private ArrayList<String> estilosViaje;   // multi-estilo
     private ArrayList<String> categorias;
-    private String estiloViaje;
     private double gastoDiarioMax;
     private ArrayList<Double> puntajesAfinidad;
 
     public PerfilPreferencias(String estiloViaje, double gastoDiarioMax) {
-        this.estiloViaje = estiloViaje;
+        this.estilosViaje = new ArrayList<String>();
+        this.estilosViaje.add(estiloViaje);
         this.gastoDiarioMax = gastoDiarioMax;
         this.categorias = new ArrayList<String>();
         this.puntajesAfinidad = new ArrayList<Double>();
@@ -19,6 +20,12 @@ public class PerfilPreferencias {
     public void agregarCategoria(String categoria, double puntaje) {
         categorias.add(categoria);
         puntajesAfinidad.add(puntaje);
+    }
+
+    public void agregarEstilo(String estilo) {
+        if (!estilosViaje.contains(estilo)) {
+            estilosViaje.add(estilo);
+        }
     }
 
     public double calcularAfinidad(String categoria) {
@@ -30,21 +37,40 @@ public class PerfilPreferencias {
         return 0.0;
     }
 
-    public void actualizarPerfil(String nuevoEstilo, double nuevoGasto) {
-        this.estiloViaje = nuevoEstilo;
+    public void actualizarPerfil(ArrayList<String> nuevosEstilos, double nuevoGasto) {
+        this.estilosViaje = nuevosEstilos;
         this.gastoDiarioMax = nuevoGasto;
+        this.categorias = new ArrayList<String>();
+        this.puntajesAfinidad = new ArrayList<Double>();
+    }
+
+    // Compatibilidad con código existente que usa un solo estilo
+    public void actualizarPerfil(String nuevoEstilo, double nuevoGasto) {
+        this.estilosViaje = new ArrayList<String>();
+        this.estilosViaje.add(nuevoEstilo);
+        this.gastoDiarioMax = nuevoGasto;
+        this.categorias = new ArrayList<String>();
+        this.puntajesAfinidad = new ArrayList<Double>();
     }
 
     public ArrayList<String> obtenerCategorias() {
         return categorias;
     }
 
+    // Devuelve el primer estilo (compatibilidad)
     public String getEstiloViaje() {
-        return estiloViaje;
+        if (estilosViaje.size() > 0) {
+            return estilosViaje.get(0);
+        }
+        return "";
     }
 
-    public void setEstiloViaje(String estiloViaje) {
-        this.estiloViaje = estiloViaje;
+    public ArrayList<String> getEstilosViaje() {
+        return estilosViaje;
+    }
+
+    public void setEstilosViaje(ArrayList<String> estilos) {
+        this.estilosViaje = estilos;
     }
 
     public double getGastoDiarioMax() {
@@ -60,6 +86,6 @@ public class PerfilPreferencias {
     }
 
     public String toString() {
-        return "PerfilPreferencias [estilo=" + estiloViaje + ", gastoDiarioMax=" + gastoDiarioMax + "]";
+        return "PerfilPreferencias [estilos=" + estilosViaje + ", gastoDiarioMax=" + gastoDiarioMax + "]";
     }
 }
