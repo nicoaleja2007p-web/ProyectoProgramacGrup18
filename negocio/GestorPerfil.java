@@ -13,9 +13,11 @@ public class GestorPerfil {
         this.perfil = perfil;
     }
 
-    public void configurarPerfil(String estilo, double gastoDiario, ArrayList<String> categorias, ArrayList<Double> puntajes) {
-        if (estilo == null || estilo.equals("")) {
-            System.out.println("El estilo de viaje es obligatorio.");
+    // Nuevo: recibe lista de estilos seleccionados
+    public void configurarPerfil(ArrayList<String> estilos, double gastoDiario,
+                                 ArrayList<String> categorias, ArrayList<Double> puntajes) {
+        if (estilos == null || estilos.size() == 0) {
+            System.out.println("Debe seleccionar al menos un estilo de viaje.");
             return;
         }
 
@@ -24,13 +26,21 @@ public class GestorPerfil {
             return;
         }
 
-        perfil.actualizarPerfil(estilo, gastoDiario);
+        perfil.actualizarPerfil(estilos, gastoDiario);
 
         for (int i = 0; i < categorias.size(); i++) {
             perfil.agregarCategoria(categorias.get(i), puntajes.get(i));
         }
 
-        System.out.println("Perfil configurado correctamente.");
+        System.out.println("Perfil configurado correctamente con estilos: " + estilos);
+    }
+
+    // Compatibilidad con código existente (un solo estilo)
+    public void configurarPerfil(String estilo, double gastoDiario,
+                                 ArrayList<String> categorias, ArrayList<Double> puntajes) {
+        ArrayList<String> estilos = new ArrayList<String>();
+        estilos.add(estilo);
+        configurarPerfil(estilos, gastoDiario, categorias, puntajes);
     }
 
     public ArrayList<Actividad> filtrarPorAfinidad(ArrayList<Actividad> actividades) {
@@ -47,11 +57,6 @@ public class GestorPerfil {
         return filtradas;
     }
 
-    public PerfilPreferencias getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(PerfilPreferencias perfil) {
-        this.perfil = perfil;
-    }
+    public PerfilPreferencias getPerfil() { return perfil; }
+    public void setPerfil(PerfilPreferencias perfil) { this.perfil = perfil; }
 }
