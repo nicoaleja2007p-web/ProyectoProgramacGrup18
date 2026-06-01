@@ -6,12 +6,16 @@ public class Usuario {
     private String nombre;
     private String email;
     private String contrasena;
+    private PerfilPreferencias perfil;
+    private HistorialViaje historial;
 
     public Usuario(int id, String nombre, String email, String contrasena) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.contrasena = contrasena;
+        this.perfil = new PerfilPreferencias("cultural", 100.0);
+        this.historial = new HistorialViaje();
     }
 
     public boolean iniciarSesion(String emailIngresado, String contrasenaIngresada) {
@@ -25,39 +29,29 @@ public class Usuario {
         System.out.println("Sesion cerrada para el usuario: " + nombre);
     }
 
-    public int getId() {
-        return id;
+    public void agregarViaje(Viaje viaje) {
+        historial.agregarViaje(viaje);
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getContrasena() { return contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public PerfilPreferencias getPerfil() { return perfil; }
+    public void setPerfil(PerfilPreferencias perfil) { this.perfil = perfil; }
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
+    public HistorialViaje getHistorial() { return historial; }
 
     public String toString() {
         return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email + "]";
     }
 }
+
